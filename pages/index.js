@@ -4,6 +4,8 @@ import Widget from '../src/components/Widget'
 import Footer from '../src/components/Footer'
 import GitHubCorner from '../src/components/GitHubCorner'
 import QuizBackground from '../src/components/QuizBackground'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 const Title = styled.h1`
   font-size: 50px;
@@ -38,15 +40,44 @@ const QuizContainer = styled.div`
 `;
 
 export default function Home() {
+  const router = useRouter();
+  const [name, setName] = React.useState('');
+  //console.log('retorno do useState', name);
+
   return (
     <QuizBackground backgroundImage={db.bg}>
+      <Head>
+        <title>AluraQuiz - Mitologia</title>
+      </Head>
       <QuizContainer>
         <Widget>
           <Widget.Header>
-            <h1>The Legend of Zelda</h1>
+            <h1>Mitologia Grega</h1>
           </Widget.Header>
           <Widget.Content>
-            <p></p>
+            <form onSubmit={function (infosDoEvento){
+              /*infosDoEvento famos e*/
+              //Router manda pra próxima página
+              infosDoEvento.preventDefault();
+              router.push(`/quiz?name=${name}`);
+
+              console.log('Fazendo uma submissão por meio do react');
+
+            }}>
+            <input
+              onChange={function (infosDoEvento) {
+                //console.log(infosDoEvento.target.value);
+
+                //State 
+                //name = infosDoEvento.target.value;
+                setName(infosDoEvento.target.value);
+              }}
+              placeholder="Qual o seu nome? :)" 
+             />
+            <button type="submit" disabled={name.length === 0}>
+              Jogar {name}
+            </button>
+            </form>
           </Widget.Content>
         </Widget>
         
